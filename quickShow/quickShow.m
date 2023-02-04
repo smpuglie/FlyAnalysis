@@ -32,8 +32,8 @@ gui_State = struct('gui_Name',       mfilename, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 
-% setpref('USERDIRECTORY','MAC','/Users/tony')
-% setpref('USERDIRECTORY','PC','C:\Users\tony')
+% setacqpref('USERDIRECTORY','MAC','/Users/sarahpugliese')
+% setacqpref('USERDIRECTORY','PC','C:\Users\tony')
 
 if nargin
     str2test = varargin{1};
@@ -66,7 +66,7 @@ end
 handles.dir = pwd;
 
 % use a linking variable, like a trial or a data struct
-if nargin>3
+if nargin>3 % TODO - edit this so that it is not specific to Tony's filepath (SMP)
     linkvariable = varargin{1};
     if ischar(linkvariable)
         error('This code needs updating');
