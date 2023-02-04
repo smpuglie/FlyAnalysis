@@ -32,7 +32,7 @@ gui_State = struct('gui_Name',       mfilename, ...
                    'gui_LayoutFcn',  [] , ...
                    'gui_Callback',   []);
 
-% setacqpref('USERDIRECTORY','MAC','/Users/sarahpugliese')
+% setacqpref('USERDIRECTORY','MAC','/Users/tony')
 % setacqpref('USERDIRECTORY','PC','C:\Users\tony')
 
 if nargin
