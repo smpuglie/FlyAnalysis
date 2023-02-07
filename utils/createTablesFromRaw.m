@@ -16,6 +16,7 @@ tic
 tfnparts = split(dfn,filesep);
 
 D = fullfile(tfnparts{1:end-1});
+D = strcat(filesep,D); % SMP - I had to add this to get the dir() function to actually work
 curprotocol = strtok(tfnparts{end},'_');
 cellID = tfnparts{end-1}; 
 tablename = fullfile(D,[curprotocol '_' cellID, '_Table.mat']);
