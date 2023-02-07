@@ -1418,7 +1418,12 @@ classdef ContinuousDataReader < handle
                 ket = fread(obj.afid,1,'char');
             end
             obj.filename = char(fn);
-            [obj.D,obj.name] = fileparts(obj.filename);
+            if ismac
+                fixFilename = regexprep(obj.filename,'\',filesep);
+                [obj.D,obj.name] = fileparts(fixFilename);
+            else
+                [obj.D,obj.name] = fileparts(obj.filename);
+            end
             if nargin > 1 && ~strcmp(varargin{1},obj.name)
                 obj.name = varargin{1};
             end
