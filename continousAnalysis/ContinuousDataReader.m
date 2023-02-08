@@ -1434,8 +1434,8 @@ classdef ContinuousDataReader < handle
             obj.filename = char(fn);
             
             if ismac
-                obj.filename = regexprep(obj.filename,'\',filesep);
-                obj.filename=obj.filename(3:end);
+                tmpFilename = regexprep(obj.filename,'\',filesep);
+                [obj.D,obj.name] = fileparts(tmpFilename);
             elseif ispc
                 [obj.D,obj.name] = fileparts(obj.filename);
             end
