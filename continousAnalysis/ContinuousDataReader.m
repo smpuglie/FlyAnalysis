@@ -1181,18 +1181,22 @@ classdef ContinuousDataReader < handle
                     if obj.controlsamprate==-1
                         error('Handle this case')
                     elseif obj.controlsamprate~=obj.samprate
-                        obj.trialnumsamps = obj.betterTrialNumSamples(rfch(obj.cookie_trial_index(1):obj.cookie_trial_index(1)+100));
+                        obj.betterTrialNumSamples(rfch(obj.cookie_trial_index(1):obj.cookie_trial_index(1)+100));
                         fprintf('Control and acquisition samp rates are different\nGuessing idxs on each trial: ')
                         fprintf('%d, ',obj.trialnumsamps)
                         fprintf('\n')
                         guess_sample_idxs = true;
                     elseif obj.controlsamprate==obj.samprate
-                        fprintf('Control and acquisition samp rates are identical\n')
+                        fprintf('Control and acquisition samp rates are identical\nGuessing idxs on each cookie: ')
+                        fprintf('%d, ',obj.trialnumsamps)
+                        fprintf('\n')
+                        obj.betterTrialNumSamples(rfch(obj.cookie_trial_index(1):obj.cookie_trial_index(1)+100));
+                        guess_sample_idxs = true;
                         if obj.samprate==50000
-                            obj.trialnumsamps = 25+10*(0:8);
-                            guess_sample_idxs = false;
+                            %                             obj.trialnumsamps = 25+10*(0:8);
+                            %                             guess_sample_idxs = false;
                         else
-                            obj.trialnumsamps = obj.betterTrialNumSamples(rfch(obj.cookie_trial_index(1):100));
+                            %                             obj.trialnumsamps = obj.betterTrialNumSamples(rfch(obj.cookie_trial_index(1):100));
                         end
                     end
                 end
@@ -1203,11 +1207,17 @@ classdef ContinuousDataReader < handle
                 end
                 for tidx = 1:length(obj.cookie_trial_index)
                     tridx = obj.cookie_trial_index(tidx);
-                    rfch_s = rfch(tridx+(0:100-1));
+                    
                     if guess_sample_idxs
-                        obj.trialnumsamps = obj.betterTrialNumSamples(rfch_s);
+                        rfch_s = rfch(tridx+(0:max([max(obj.trialnumsamps),200])));
+                        obj.betterTrialNumSamples(rfch_s);
                     end
+                    rfch_s = rfch(tridx+(0:max(obj.trialnumsamps)+10));
                     [cookie_trialnumbers(tidx),cookie_hashes(tidx)] = obj.trial_num_from_refchan(rfch_s);
+                    fprintf('(%d, %.1f), ',cookie_trialnumbers(tidx), cookie_hashes(tidx))
+                    % if cookie_trialnumbers(tidx)==69
+                    %     a = 'stop';
+                    % end
                 end
                 fprintf('\n')
                 % next(strcmp(obj.channels,'refchan'),:) = rfch;
@@ -1234,23 +1244,28 @@ classdef ContinuousDataReader < handle
 
         end
 
-        function ud_idx = betterTrialNumSamples(obj,s)
+        function betterTrialNumSamples(obj,s)
             s1 = round((s-s(end))*10);
+            idx = 1;
+
+            % sometimes the first sample can be -1, which throws this
+            % search pattern off.
+            while s1(idx)==-1
+                s1(idx) = 0;
+                idx=idx+1;
+            end
             low_idx = s1==-1;
             % check that this waveform is well conditioned and adjust
 
-            ud_idx = find([0, diff(low_idx)]<0);
-            if max(s1(ud_idx))< max(s1)
-                n1_per = find([0, diff(low_idx)]>0);
-                for n_idx = 1:length(n1_per)-1
-                    up_idx(n_idx) = n1_per(n_idx)-1+find(s1(n1_per(n_idx):n1_per(n_idx+1))==max(s1(n1_per(n_idx):n1_per(n_idx+1))),1,'first');
-                end
-                up_idx(n_idx+1) = n1_per(end)+2;
-                digits = s1(up_idx(1:end-1));
-                ods = s1(ud_idx(1:end-1));
-                fprintf('\n\tWeirdly conditioned refchan for trial %d (%d)\n',sum(10.^(0:length(digits)-1).*digits),sum(10.^(0:length(ods)-1).*ods))
-                ud_idx = up_idx;
+            du_idx = find([0, diff(low_idx)]<0);
+            for n_idx = 1:length(du_idx)-1
+                i_0 = du_idx(n_idx);
+                i_1 = du_idx(n_idx+1)-1;    % point before s1 is no longer -1;
+                s_i = s1(i_0:i_1-1);        % snippet between -1 transitions;
+                up_idx(n_idx) = (i_0-1) + find(s_i==max(s_i),1,'first');
             end
+            up_idx(n_idx+1) = du_idx(end)+2;
+            obj.trialnumsamps = up_idx;
 
         end
 
@@ -1261,7 +1276,6 @@ classdef ContinuousDataReader < handle
             digits = digits(1:end-1)-hash;
             trialnum = sum(10.^(0:length(digits)-1).*digits);
             hash = hash/10;
-            fprintf('(%d, %.1f), ',trialnum, hash)
         end
 
         function updateoverview(obj,next)
@@ -1418,12 +1432,14 @@ classdef ContinuousDataReader < handle
                 ket = fread(obj.afid,1,'char');
             end
             obj.filename = char(fn);
+            
             if ismac
-                fixFilename = regexprep(obj.filename,'\',filesep);
-                [obj.D,obj.name] = fileparts(fixFilename);
-            else
+                obj.filename = regexprep(obj.filename,'\',filesep);
+                obj.filename=obj.filename(3:end);
+            elseif ispc
                 [obj.D,obj.name] = fileparts(obj.filename);
             end
+
             if nargin > 1 && ~strcmp(varargin{1},obj.name)
                 obj.name = varargin{1};
             end
