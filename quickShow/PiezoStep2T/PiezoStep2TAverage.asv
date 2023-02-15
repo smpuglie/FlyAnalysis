@@ -1,4 +1,4 @@
-function h = LEDArduinoFlash_Average(h,handles,savetag)
+function h = PiezoStep2TAverage(h,handles,savetag)
 
 % setupStimulus
 delete(get(h,'children'));

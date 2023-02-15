@@ -1209,10 +1209,10 @@ classdef ContinuousDataReader < handle
                     tridx = obj.cookie_trial_index(tidx);
                     
                     if guess_sample_idxs
-                        rfch_s = rfch(tridx+(0:max([max(obj.trialnumsamps),200])));
+                        rfch_s = rfch(tridx+(0:max([max(obj.trialnumsamps),min([200,length(rfch)-tridx])])));
                         obj.betterTrialNumSamples(rfch_s);
                     end
-                    rfch_s = rfch(tridx+(0:max(obj.trialnumsamps)+10));
+                    rfch_s = rfch(tridx+(0:max([max(obj.trialnumsamps),min([200,length(rfch)-tridx])])));
                     [cookie_trialnumbers(tidx),cookie_hashes(tidx)] = obj.trial_num_from_refchan(rfch_s);
                     fprintf('(%d, %.1f), ',cookie_trialnumbers(tidx), cookie_hashes(tidx))
                     % if cookie_trialnumbers(tidx)==69
