@@ -324,19 +324,34 @@ classdef ContinuousDataReader < handle
                 
                 linkaxes([obj.ffwaiax,obj.ffwdiax],'x')
                 
-                obj.nextbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1800 824 40 20],'String','->','Tooltip','Next Cookie');
-                obj.prevbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1750 824 40 20],'String','<-','Tooltip','Previous Cookie');
-                obj.sizeedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1700 824 40 20],'String',num2str(obj.cookiesize),'Tooltip','Cookie size');
-                obj.gotoedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1650 824 40 20],'String',num2str(obj.cookietime(1)),'Tooltip','Cookie start time');
+%                 obj.nextbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1800 824 40 20],'String','->','Tooltip','Next Cookie');
+%                 obj.prevbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1750 824 40 20],'String','<-','Tooltip','Previous Cookie');
+%                 obj.sizeedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1700 824 40 20],'String',num2str(obj.cookiesize),'Tooltip','Cookie size');
+%                 obj.gotoedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1650 824 40 20],'String',num2str(obj.cookietime(1)),'Tooltip','Cookie start time');
+% 
+%                 obj.nexttrialbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1800 800 40 20],'String','->','Tooltip','Next Trial');
+%                 obj.prevtrialbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1750 800 40 20],'String','<-','Tooltip','Previous Trial');
+%                 obj.trialedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1700 800 40 20],'String',num2str(0),'Tooltip','Trial num');
+%                 obj.refchedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1650 800 40 20],'String',num2str(0),'Tooltip','Stimulus hash');
+% 
+%                 obj.resizebutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1600 824 40 20],'String','resize','Tooltip','Tighten the axes');
+%                 obj.vizucheck = uicontrol('Parent',obj.ffwfig,'Style','togglebutton','Position',[1600 800 40 20],'String','An In','Tooltip','Show analog in channels');
+%                 obj.quickShow = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1550 824 40 20],'String','qckSh','Tooltip','Open quickshow');
+                
+                % new positions to show on my screen
+                obj.nextbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1400 824 40 20],'String','->','Tooltip','Next Cookie');
+                obj.prevbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1350 824 40 20],'String','<-','Tooltip','Previous Cookie');
+                obj.sizeedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1300 824 40 20],'String',num2str(obj.cookiesize),'Tooltip','Cookie size');
+                obj.gotoedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1250 824 40 20],'String',num2str(obj.cookietime(1)),'Tooltip','Cookie start time');
 
-                obj.nexttrialbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1800 800 40 20],'String','->','Tooltip','Next Trial');
-                obj.prevtrialbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1750 800 40 20],'String','<-','Tooltip','Previous Trial');
-                obj.trialedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1700 800 40 20],'String',num2str(0),'Tooltip','Trial num');
-                obj.refchedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1650 800 40 20],'String',num2str(0),'Tooltip','Stimulus hash');
+                obj.nexttrialbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1400 800 40 20],'String','->','Tooltip','Next Trial');
+                obj.prevtrialbutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1350 800 40 20],'String','<-','Tooltip','Previous Trial');
+                obj.trialedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1300 800 40 20],'String',num2str(0),'Tooltip','Trial num');
+                obj.refchedit = uicontrol('Parent',obj.ffwfig,'Style','edit','Position',[1250 800 40 20],'String',num2str(0),'Tooltip','Stimulus hash');
 
-                obj.resizebutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1600 824 40 20],'String','resize','Tooltip','Tighten the axes');
-                obj.vizucheck = uicontrol('Parent',obj.ffwfig,'Style','togglebutton','Position',[1600 800 40 20],'String','An In','Tooltip','Show analog in channels');
-                obj.quickShow = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1550 824 40 20],'String','qckSh','Tooltip','Open quickshow');
+                obj.resizebutt = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1200 824 40 20],'String','resize','Tooltip','Tighten the axes');
+                obj.vizucheck = uicontrol('Parent',obj.ffwfig,'Style','togglebutton','Position',[1200 800 40 20],'String','An In','Tooltip','Show analog in channels');
+                obj.quickShow = uicontrol('Parent',obj.ffwfig,'Style','pushbutton','Position',[1150 824 40 20],'String','qckSh','Tooltip','Open quickshow');
                 obj.quickShow.Visible = obj.extracted;
                 if obj.extracted
                     obj.quickShow.Enable = 'on';
