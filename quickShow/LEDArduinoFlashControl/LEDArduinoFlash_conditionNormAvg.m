@@ -1,4 +1,6 @@
-function h = LEDArduinoFlash_conditionAvg(h, handles, savetag) 
+function h = LEDArduinoFlash_conditionNormAvg(h, handles, savetag) 
+% probe position for each trial is normalized to the baseline for that
+% trial block
 
 inTrial = handles.trial;
 
@@ -21,18 +23,19 @@ for i = 1:nTrials
     trialIdx = likeTrials(i);
     trial = load(sprintf(stem,trialIdx));
     trialData(i).LED = trial.arduino_output;
-    trialData(i).ProbePosition = trial.probe_position;
+    normProbePosition = trial.probe_position - getBlockBaseline(trial,T);
+    trialData(i).NormProbePosition = normProbePosition;
 
-    plot(tAxis,trial.probe_position,"Color",[1 .7 .7]);
+    plot(tAxis,normProbePosition,"Color",[1 .7 .7]);
 end
 
-probePositionMat = matFromStruct(trialData,"ProbePosition");
+probePositionMat = matFromStruct(trialData,"NormProbePosition");
 plot(tAxis,mean(probePositionMat),"Color",[.7 0 0],'LineWidth',2)
 % to be continued
 hold off
 ylabel("Probe position (µm)")
 xlabel("Time (s)")
-ylim([100 900])
+ylim([-400 400])
 
 titleStr = strcat("LED amp = ",num2str(ledAmp));
 
