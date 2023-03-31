@@ -15,7 +15,7 @@ for i = 1:nTrials
     else
          baselineIdxs = 1:(trial.params.preDurInSec * trial.params.sampratein);
     end
-    trialBaselines(i) = mean(trial.probe_position(baselineIdxs));
+    trialBaselines(i) = mean(fixProbeArtifact(trial.probe_position(baselineIdxs),75),"omitnan");
 end
 
 blockBaseline = mean(trialBaselines);
